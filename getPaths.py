@@ -40,16 +40,17 @@ def multiply(A, B):
 
 # turns adjacency matrix into list of dicts mapping
 def matrixToList(A):
-    adjacencyList = [None]
+    adjacencyList = []
     for row in A:
-        print(row)
         dict = {}
         for index, entry in enumerate(row):
+            if entry != '-':
             # if want to label vertices starting at 1, add , start=1 to enumerate params
-            if entry not in dict:
-                dict[entry] = [None]
-            dict[entry].append(index)
+                if entry not in dict:
+                    dict[entry] = []
+                dict[entry].append(index)
         adjacencyList.append(dict)
+    return adjacencyList
 
 x = [['-','-','-','y','p','y'],
     ['-','-','-','y','y','p'],
@@ -67,4 +68,8 @@ result = getPaths(x)
 for row in result :
     print(row)
 
-print(matrixToList(x))
+print('')
+
+list = matrixToList(x)
+for vertex in list:
+    print(vertex)

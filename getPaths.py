@@ -1,3 +1,4 @@
+import queue as q
 
 def getPaths(A):
 
@@ -38,7 +39,7 @@ def multiply(A, B):
                             result[row][col].append(new)
     return result
 
-# turns adjacency matrix into list of dicts mapping
+# turns adjacency matrix into list of dicts mapping edge colors to vertex indcices
 def matrixToList(A):
     adjacencyList = []
     for row in A:
@@ -51,6 +52,24 @@ def matrixToList(A):
                 dict[entry].append(index)
         adjacencyList.append(dict)
     return adjacencyList
+
+# returns proper distance between two integers representing the indcices of vertices
+def getProperDistance(a, b):
+    queue = q.Queue(-1)
+    # triples represent vertex and color previously used
+    queue.put((a,'y', 0))
+    queue.put((a,'p', 0))
+    while (not queue.empty()):
+        get = queue.get()
+        if (get[0] == b):
+            return get[2]
+        nextColor = 'p'
+        if get[1] == 'p':
+            nextColor = 'y'
+        if nextColor in adjacencyList[get[0]]:
+            for vertex in adjacencyList[get[0]][nextColor]:
+                queue.put((vertex,nextColor,get[2]+1))
+    return -1
 
 x = [['-','-','-','y','p','y'],
     ['-','-','-','y','y','p'],
@@ -70,6 +89,9 @@ for row in result :
 
 print('')
 
-list = matrixToList(x)
-for vertex in list:
+adjacencyList = matrixToList(x)
+for vertex in adjacencyList:
     print(vertex)
+
+for i in range(len(x)):
+    print(getProperDistance(0,i))
